@@ -14,10 +14,24 @@
     inputs.hardware.nixosModules.common-pc-ssd
     inputs.hardware.nixosModules.common-pc-laptop
 
+    inputs.nixos-cosmic.nixosModules.default
+
     ./disks.nix
     ./hardware-configuration.nix
     ../common/user.nix
   ];
+
+  # Binary cache for COSMIC
+  nix.settings = {
+    substituters = ["https://cosmic.cachix.org/"];
+    trusted-public-keys = ["cosmic.cachix.org-1:Dya9IyXD4xdBehWjrkPv6rtxpmMdRel02smYzA85dPE="];
+  };
+
+  # Enable COSMIC
+  services = {
+    desktopManager.cosmic.enable = true;
+    displayManager.cosmic-greeter.enable = true;
+  };
 
   networking.hostName = "t480";
 
@@ -55,8 +69,9 @@
       sops.enable = true;
     };
     programs = {
-      hyprland.enable = true;
-      greetd.enable = true;
+      hyprland.enable = false;
+      greetd.enable = false;
+      tlp.enable = false;
       btrbk.enable = true;
       openssh.enable = true;
     };
